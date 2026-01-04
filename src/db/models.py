@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Float, Integer, Text, String, DateTime, ForeignKey, func
+from sqlalchemy import Column, String, Float, Integer, Text, String, DateTime, ForeignKey, func, UniqueConstraint
 from pgvector.sqlalchemy import Vector
 from sqlalchemy.dialects.postgresql import UUID
 from src.db.session import Base
@@ -27,6 +27,11 @@ class Track(Base):
     #for audit
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+   #adding contraint, to handle idempotency issues..(duplicate tracks)
+    __table_args__ = (
+        UniqueConstraint('title', 'artist', name="uq_track_title_artist"),
+        )
 
 class TrackEmbedding(Base):
 
