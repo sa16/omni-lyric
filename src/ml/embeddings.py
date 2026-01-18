@@ -17,7 +17,7 @@ class EmbeddingModel:
     #config, pinned to version, to restrict drifts & index breaking post huggingface updates. 
     #MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"
     MODEL_ID = "all-MiniLM-L6-v2"
-    MODEL_REVISION = "fa97f6e7cb1a59073dff9e6b13e27730ea7d508f"
+    MODEL_REVISION = None # "fa97f6e7cb1a59073dff9e6b13e27730ea7d508f"
     EXPECTED_DIM = 384
     MAX_SEQ_LENGTH = 256 #limit specific to model
 
@@ -96,7 +96,15 @@ class EmbeddingModel:
                 show_progress_bar = False,
                 convert_to_numpy= True
             )
-        return embeddings
+        return embeddings #I will consider changing this to .astype(np.float32) for extra precaution as postgress will reject 64 bit
+    
+    def embed_query(self, query: str) -> np.ndarray:
+        """
+        this is a helper function for the search microservice. Isoloting embedding for api service layer & ML layer (generate function)
+        """
+        batch_input = [{'title':"", 'artist':"", 'lyrics': query}] #title & artist can be unknown in the search query, the user can choose not to mention.
+
+        return self.generate(batch_input)[0]
     
 embedding_model = EmbeddingModel()
         

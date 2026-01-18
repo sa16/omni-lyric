@@ -52,4 +52,9 @@ class TrackEmbedding(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
+    #contraint to ensure only one embedding per track
+    __table_args__ = (
+        UniqueConstraint('track_id', 'model_version', name="uq_track_embedding_version"),
+    )
+
 
