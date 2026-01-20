@@ -21,3 +21,6 @@ postgres_data/
 dist/
 debug_connect.py
 data/
+
+#supabase
+data_dump.sql
