@@ -1,93 +1,110 @@
-<svg width="800" height="450" xmlns="http://www.w3.org/2000/svg">
-  <!-- CSS Styles -->
+<svg width="900" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Styles -->
   <style>
-    .text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    .title { font-size: 14px; font-weight: bold; fill: #333; }
-    .desc { font-size: 12px; fill: #666; }
-    .arrow { stroke: #555; stroke-width: 2; marker-end: url(#arrowhead); }
-    .dashed { stroke-dasharray: 5,5; }
-    .box { stroke-width: 2; rx: 10; ry: 10; filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.1)); }
-    .label-bg { fill: white; opacity: 0.8; }
+    .text-title { font-family: 'Segoe UI', sans-serif; font-size: 16px; font-weight: 700; fill: #333; }
+    .text-desc { font-family: 'Segoe UI', sans-serif; font-size: 12px; fill: #666; }
+    .box { fill: #ffffff; stroke: #e0e0e0; stroke-width: 2px; rx: 8; filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.05)); }
+    .arrow-line { stroke: #555; stroke-width: 2; fill: none; }
+    .arrow-head { fill: #555; }
+    .label-bg { fill: #fff; opacity: 0.9; }
+    .label-text { font-family: 'Segoe UI', sans-serif; font-size: 11px; fill: #444; font-weight: 600; text-anchor: middle; }
   </style>
 
-  <!-- Arrow Marker Definition -->
+  <!-- Arrow Marker -->
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#555" />
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" class="arrow-head" />
     </marker>
   </defs>
 
-  <!-- Background (Optional, useful for dark mode compatibility) -->
-  <rect width="100%" height="100%" fill="#ffffff" rx="15" />
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#F9FAFB" rx="10" />
 
-  <!-- ================= NODES ================= -->
+  <!-- ==================== NODES ==================== -->
 
   <!-- 1. Frontend: React -->
-  <g transform="translate(50, 50)">
-    <rect width="180" height="80" class="box" fill="#e6f7ff" stroke="#61dafb" />
-    <text x="20" y="35" font-size="24">⚛️</text>
-    <text x="55" y="30" class="title">Frontend UI</text>
-    <text x="55" y="50" class="desc">React.js</text>
-    <text x="55" y="65" class="desc">Search Interface</text>
+  <g transform="translate(50, 60)">
+    <rect width="200" height="90" class="box" stroke="#61DAFB"/>
+    <!-- React Logo -->
+    <image href="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" x="20" y="20" height="50" width="50" />
+    <text x="85" y="40" class="text-title">Frontend</text>
+    <text x="85" y="60" class="text-desc">React Application</text>
+    <text x="85" y="75" class="text-desc" style="font-style:italic;">Search Interface</text>
   </g>
 
   <!-- 2. Backend: FastAPI -->
-  <g transform="translate(310, 50)">
-    <rect width="180" height="80" class="box" fill="#e0f2f1" stroke="#009688" />
-    <text x="20" y="35" font-size="24">⚡</text>
-    <text x="55" y="30" class="title">API Gateway</text>
-    <text x="55" y="50" class="desc">FastAPI (Python)</text>
-    <text x="55" y="65" class="desc">Orchestrator</text>
+  <g transform="translate(350, 60)">
+    <rect width="200" height="90" class="box" stroke="#009688"/>
+    <!-- FastAPI Logo -->
+    <image href="https://upload.wikimedia.org/wikipedia/commons/1/1a/FastAPI_logo.svg" x="20" y="25" height="40" width="40" />
+    <text x="80" y="40" class="text-title">Backend API</text>
+    <text x="80" y="60" class="text-desc">FastAPI (Python)</text>
+    <text x="80" y="75" class="text-desc" style="font-style:italic;">Orchestrator</text>
   </g>
 
-  <!-- 3. Inference: SentenceTransformer -->
-  <g transform="translate(570, 50)">
-    <rect width="180" height="80" class="box" fill="#fff3e0" stroke="#ff9800" />
-    <text x="20" y="35" font-size="24">🧠</text>
-    <text x="55" y="30" class="title">Inference Engine</text>
-    <text x="55" y="50" class="desc">SentenceTransformer</text>
-    <text x="55" y="65" class="desc">MiniLM-L6-v2</text>
+  <!-- 3. Inference: HuggingFace (SentenceTransformers) -->
+  <g transform="translate(650, 60)">
+    <rect width="200" height="90" class="box" stroke="#FFD21E"/>
+    <!-- HuggingFace Logo -->
+    <image href="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" x="20" y="20" height="50" width="50" />
+    <text x="80" y="40" class="text-title">Inference</text>
+    <text x="80" y="60" class="text-desc">SentenceTransformer</text>
+    <text x="80" y="75" class="text-desc" style="font-style:italic;">MiniLM-L6-v2</text>
   </g>
 
   <!-- 4. Database: PostgreSQL -->
-  <g transform="translate(310, 250)">
-    <!-- Cylinder Shape approximation -->
-    <path d="M0,10 a90,15 0 1,1 180,0 v60 a90,15 0 1,1 -180,0 z" fill="#e8eaf6" stroke="#336791" stroke-width="2" filter="drop-shadow(3px 3px 2px rgba(0,0,0,0.1))" />
-    <path d="M0,10 a90,15 0 1,1 180,0" fill="none" stroke="#336791" stroke-width="2" />
-    
-    <text x="20" y="55" font-size="24">🐘</text>
-    <text x="55" y="50" class="title">Vector DB</text>
-    <text x="55" y="70" class="desc">PostgreSQL + pgvector</text>
+  <g transform="translate(350, 300)">
+    <rect width="200" height="90" class="box" stroke="#336791"/>
+    <!-- Postgres Logo -->
+    <image href="https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg" x="20" y="15" height="60" width="60" />
+    <text x="85" y="40" class="text-title">Vector DB</text>
+    <text x="85" y="60" class="text-desc">PostgreSQL</text>
+    <text x="85" y="75" class="text-desc" style="font-style:italic;">pgvector extension</text>
   </g>
 
   <!-- 5. Ingestion: CSV -->
-  <g transform="translate(50, 260)">
-    <path d="M0,0 L120,0 L150,30 L150,80 L0,80 Z" fill="#f5f5f5" stroke="#999" class="box" />
-    <text x="20" y="45" font-size="24">📄</text>
-    <text x="55" y="40" class="title">Raw Data</text>
-    <text x="55" y="60" class="desc">CSV Dataset</text>
+  <g transform="translate(50, 300)">
+    <rect width="200" height="90" class="box" stroke="#888"/>
+    <!-- Simple File Icon Path -->
+    <path d="M40,20 L60,20 L75,35 L75,70 L40,70 Z" fill="#eee" stroke="#555" stroke-width="2" transform="translate(5,5)"/>
+    <path d="M60,20 L60,35 L75,35" fill="none" stroke="#555" stroke-width="2" transform="translate(5,5)"/>
+    <text x="48" y="55" font-family="monospace" font-weight="bold" font-size="10" fill="#333">CSV</text>
+    
+    <text x="90" y="40" class="text-title">Raw Data</text>
+    <text x="90" y="60" class="text-desc">Dataset Ingestion</text>
+    <text x="90" y="75" class="text-desc" style="font-style:italic;">Batch Process</text>
   </g>
 
-  <!-- ================= EDGES ================= -->
+  <!-- ==================== EDGES / CONNECTORS ==================== -->
 
-  <!-- React -> FastAPI -->
-  <line x1="230" y1="90" x2="300" y2="90" class="arrow" />
-  <text x="240" y="80" class="desc" fill="#555">JSON Query</text>
+  <!-- Frontend -> Backend -->
+  <line x1="250" y1="105" x2="340" y2="105" class="arrow-line" marker-end="url(#arrow)" />
+  <rect x="255" y="85" width="80" height="18" class="label-bg"/>
+  <text x="295" y="98" class="label-text">Search Query</text>
 
-  <!-- FastAPI <-> Model -->
-  <path d="M490,80 L560,80" class="arrow" fill="none" />
-  <path d="M560,100 L490,100" class="arrow" fill="none" />
-  <text x="500" y="75" class="desc" fill="#555">Text</text>
-  <text x="500" y="115" class="desc" fill="#555">Vector (384d)</text>
+  <!-- Backend <-> Inference -->
+  <path d="M550,90 L640,90" class="arrow-line" marker-end="url(#arrow)" />
+  <path d="M640,120 L550,120" class="arrow-line" marker-end="url(#arrow)" />
+  
+  <rect x="560" y="75" width="70" height="15" class="label-bg"/>
+  <text x="595" y="86" class="label-text">Text Input</text>
+  
+  <rect x="560" y="125" width="70" height="15" class="label-bg"/>
+  <text x="595" y="136" class="label-text">Vector (384d)</text>
 
-  <!-- FastAPI <-> DB -->
-  <line x1="400" y1="130" x2="400" y2="250" class="arrow" />
-  <line x1="420" y1="250" x2="420" y2="130" class="arrow" />
-  <rect x="340" y="180" width="140" height="20" fill="white" fill-opacity="0.9"/>
-  <text x="365" y="195" class="desc" fill="#555">ANN Search / HNSW</text>
+  <!-- Backend <-> DB -->
+  <line x1="420" y1="150" x2="420" y2="290" class="arrow-line" marker-end="url(#arrow)" />
+  <line x1="480" y1="290" x2="480" y2="150" class="arrow-line" marker-end="url(#arrow)" />
+  
+  <rect x="360" y="210" width="80" height="18" class="label-bg"/>
+  <text x="395" y="223" class="label-text">ANN Search</text>
+
+  <rect x="490" y="210" width="80" height="18" class="label-bg"/>
+  <text x="530" y="223" class="label-text">HNSW Results</text>
 
   <!-- CSV -> DB -->
-  <path d="M200,300 L300,300" class="arrow dashed" fill="none" />
-  <text x="215" y="290" class="desc" fill="#555">Batch Upsert</text>
+  <line x1="250" y1="345" x2="340" y2="345" class="arrow-line" stroke-dasharray="5,5" marker-end="url(#arrow)" />
+  <rect x="260" y="325" width="70" height="18" class="label-bg"/>
+  <text x="295" y="338" class="label-text">Batch Upsert</text>
 
 </svg>
