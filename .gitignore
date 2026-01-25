@@ -24,3 +24,5 @@ data/
 
 #supabase
 data_dump.sql
+
+.DS_Store
