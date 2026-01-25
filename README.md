@@ -14,51 +14,7 @@ This is not a traditional Keyword search engine (BM25). The underlying principle
 
 # Architecture:
 
-graph LR
-    %% -- NODES --
-    subgraph Client ["🖥️ Client Layer"]
-        FE["fab:fa-react React Frontend<br/>(Search UI)"]
-    end
-
-    subgraph Backend ["⚙️ API Layer"]
-        API["fab:fa-python FastAPI Backend<br/>(Orchestrator)"]
-    end
-
-    subgraph ML ["🧠 Inference Layer"]
-        Model["fas:fa-brain SentenceTransformer<br/>(MiniLM-L6-v2)"]
-    end
-
-    subgraph Storage ["🗄️ Data Layer"]
-        DB[("fas:fa-database PostgreSQL<br/>(pgvector extension)")]
-    end
-
-    subgraph ETL ["📥 Ingestion Pipeline"]
-        CSV["fas:fa-file-csv Raw Dataset<br/>(CSV Files)"]
-    end
-
-    %% -- EDGES --
-    FE -- "1. Search Query" --> API
-    
-    API -- "2. Text Input" --> Model
-    Model -.-> |"3. Vector (384d)"| API
-    
-    API -- "4. ANN Search (Cosine)" --> DB
-    DB -.-> |"5. HNSW Index Scan"| API
-    
-    CSV -- "0. Batch Upsert" --> DB
-
-    %% -- STYLING --
-    classDef react fill:#20232a,stroke:#61dafb,stroke-width:2px,color:#61dafb;
-    classDef python fill:#FFE873,stroke:#4B8BBE,stroke-width:2px,color:#306998;
-    classDef db fill:#336791,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef ai fill:#ffdfba,stroke:#ffb347,stroke-width:2px,color:#d35400;
-    classDef file fill:#f4f4f4,stroke:#333,stroke-width:1px,color:#333;
-
-    class FE react;
-    class API python;
-    class DB db;
-    class Model ai;
-    class CSV file;
+![System Architecture](architecture.svg)
 
 
 ## Tech Stack:
