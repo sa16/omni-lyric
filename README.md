@@ -78,11 +78,11 @@ Batch ingestion for V1 vs Streaming data (& making it more upto date) - The inge
 
 # Future versions:
 
-    -Hybrid Search: Implement Reciprocal Rank Fusion (RRF) to combine Vector Similarity with Keyword Search (BM25) to fix Named Entity recognition (e.g., searching for specific artists).
-    -Re-Ranking: Add a Cross-Encoder step (using ms-marco-MiniLM) to re-rank the top 20 results for higher precision.
-    -Live Indexing: Implement a CDC (Change Data Capture) pipeline to automatically vectorise new songs added to the metadata table.
-    -toggle to search based on music vs lyrics: Right now semantic similarity is based on lyrics, future versions will have genre based matching option.
-    -hybrid ingestion: Will add streaming data pipelines to ensure dataset is upto date.
+Hybrid Search: Implement Reciprocal Rank Fusion (RRF) to combine Vector Similarity with Keyword Search (BM25) to fix Named Entity recognition (e.g., searching for specific artists).
+Re-Ranking: Add a Cross-Encoder step (using ms-marco-MiniLM) to re-rank the top 20 results for higher precision.
+Live Indexing: Implement a CDC (Change Data Capture) pipeline to automatically vectorise new songs added to the metadata table.
+toggle to search based on music vs lyrics: Right now semantic similarity is based on lyrics, future versions will have genre based matching option.
+hybrid ingestion: Will add streaming data pipelines to ensure dataset is upto date with latest tracks, pop culture relevant. 
 
 
 
