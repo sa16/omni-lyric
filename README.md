@@ -14,7 +14,7 @@ This is not a traditional Keyword search engine (BM25). The underlying principle
 
 # Architecture:
 
-![System Architecture](architecture.svg)
+![System Architecture](/Frontend/src/assets/architecture.svg)
 
 
 ## Tech Stack:
