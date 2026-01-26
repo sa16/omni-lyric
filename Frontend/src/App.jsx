@@ -103,7 +103,7 @@ function App() {
               <div className="flex justify-between text-xs font-mono text-spotify-green mb-1">
                  <span className="flex items-center gap-2 uppercase">
                     <Server className="w-3 h-3 animate-pulse" />
-                    Cold start in progress (Render free tier)
+                    Cold start in progress (Render free tier-May take 1-2mins to boot)
                  </span>
                  <span>{bootProgress}%</span>
               </div>
