@@ -71,7 +71,7 @@ app.add_middleware(
 #registering the routes 
 app.include_router(router, prefix="/api/v1")
 
-@app.get("/health")
+@app.get("/api/v1/health")
 def health_check():
     """
     kubernetes/Docker health check point

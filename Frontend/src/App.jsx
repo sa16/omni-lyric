@@ -1,7 +1,11 @@
-import { useState } from 'react';
-import { Search, Zap, Activity, Code } from 'lucide-react'; 
+import { useState, useEffect } from 'react';
+import { Search, Zap, Activity, Server } from 'lucide-react'; 
 import PlayButton from './PlayButton';
 import logoImg from './assets/logo.jpeg'; 
+
+// FEEDBACK ITEM 3: Extract API_BASE once at top-level.
+// This reduces noise and ensures consistency across the module.
+const API_BASE = import.meta.env.VITE_API_URL ?? '';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -9,17 +13,59 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [stats, setStats] = useState(null);
+  
+  // Server State Machine: 'checking' -> 'booting' -> 'online'
+  const [serverStatus, setServerStatus] = useState('checking'); 
+  const [bootProgress, setBootProgress] = useState(0);
+
+  useEffect(() => {
+    let progressInterval;
+    let pollInterval;
+
+    const checkServer = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/health`);
+        if (res.ok) {
+          setBootProgress(100);
+          setServerStatus('online');
+          clearInterval(progressInterval);
+          clearInterval(pollInterval);
+        }
+      } catch (e) {
+        setServerStatus('booting');
+      }
+    };
+
+    // Simulate "Cold Start" progress (capped at 90% until real response)
+    progressInterval = setInterval(() => {
+      setBootProgress(prev => {
+        if (prev >= 90) return 90; 
+        return prev + 2; 
+      });
+    }, 1000);
+
+    pollInterval = setInterval(checkServer, 2000);
+    checkServer();
+
+    return () => {
+      clearInterval(progressInterval);
+      clearInterval(pollInterval);
+    };
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
+
+    // FEEDBACK ITEM 2: Strict blocking. 
+    // Don't "try" to search if offline. Don't set an error. Just block.
+    if (serverStatus !== 'online') return;
 
     setLoading(true);
     setError(null);
     setStats(null);
 
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || '';
       const response = await fetch(`${API_BASE}/api/v1/search`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -34,8 +80,13 @@ function App() {
         latency: data.latency_ms,
         version: data.model_version
       });
+      
+      // If a search succeeds, we are definitely online
+      setServerStatus('online');
+      setBootProgress(100); 
+
     } catch (err) {
-      setError("Backend connection failed. Is the server running?");
+      setError("Connection failed. Please try again.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -43,9 +94,30 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-spotify-black text-white font-sans selection:bg-spotify-green selection:text-black flex flex-col">
+    <div className="min-h-screen bg-spotify-black text-white font-sans selection:bg-spotify-green selection:text-black flex flex-col relative">
       
-      {/* MAIN CONTENT WRAPPER (Grows to fill space) */}
+      {/* --- FEEDBACK ITEM 1: INFRA-LITERATE BOOT BAR --- */}
+      {serverStatus !== 'online' && (
+        <div className="w-full bg-gray-900 border-b border-white/10 sticky top-0 z-50">
+           <div className="max-w-2xl mx-auto px-6 py-2">
+              <div className="flex justify-between text-xs font-mono text-spotify-green mb-1">
+                 <span className="flex items-center gap-2 uppercase">
+                    <Server className="w-3 h-3 animate-pulse" />
+                    Cold start in progress (Render free tier)
+                 </span>
+                 <span>{bootProgress}%</span>
+              </div>
+              <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                 <div 
+                   className="h-full bg-spotify-green transition-all duration-1000 ease-out"
+                   style={{ width: `${bootProgress}%` }}
+                 ></div>
+              </div>
+           </div>
+        </div>
+      )}
+
+      {/* MAIN CONTENT */}
       <div className="flex-grow p-6 md:p-12">
         
         {/* HEADER */}
@@ -73,17 +145,18 @@ function App() {
               <Search className="ml-4 w-6 h-6 text-gray-400" />
               <input
                 type="text"
-                className="w-full bg-transparent p-4 outline-none text-lg placeholder-gray-500 text-white rounded-full"
-                placeholder="Search by lyric, mood, or meaning..."
+                className="w-full bg-transparent p-4 outline-none text-lg placeholder-gray-500 text-white rounded-full disabled:opacity-50"
+                placeholder={serverStatus === 'online' ? "Search by lyric, mood, or meaning..." : "Waiting for system to boot..."}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                disabled={serverStatus !== 'online'} 
               />
               <button 
                 type="submit" 
-                disabled={loading}
+                disabled={loading || serverStatus !== 'online'}
                 className="mr-2 px-6 py-2 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Thinking...' : 'Search'}
+                {loading ? 'Thinking...' : serverStatus === 'online' ? 'Search' : 'Booting...'}
               </button>
             </div>
           </form>
@@ -102,7 +175,7 @@ function App() {
           )}
         </div>
 
-        {/* ERROR */}
+        {/* ERROR MSG */}
         {error && (
           <div className="max-w-2xl mx-auto mb-8 p-4 bg-red-900/20 border border-red-800 rounded-lg text-red-200 text-center font-mono text-sm">
             {error}
@@ -128,7 +201,8 @@ function App() {
                 </p>
               </div>
               <div className="text-right shrink-0 pl-4">
-                <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-0.5">Match</div>
+                {/* FEEDBACK ITEM 4: SEMANTIC LABELING */}
+                <div className="text-[10px] text-gray-500 uppercase tracking-wider font-bold mb-0.5">Similarity</div>
                 <div className={`text-sm font-mono font-bold ${
                   result.score > 0.6 ? 'text-spotify-green' : 
                   result.score > 0.4 ? 'text-yellow-400' : 'text-gray-400'
@@ -138,9 +212,9 @@ function App() {
               </div>
             </div>
           ))}
-          {results.length === 0 && !loading && !error && query && (
+          {results.length === 0 && !loading && !error && query && serverStatus === 'online' && (
             <div className="text-center text-gray-500 py-12">
-              <p>No match found, try again!</p>
+              <p>No match found. Try describing the vibe differently.</p>
             </div>
           )}
         </div>
@@ -150,8 +224,8 @@ function App() {
       <footer className="w-full py-6 border-t border-white/5 bg-black/20 backdrop-blur-sm mt-auto">
         <div className="max-w-2xl mx-auto px-6 text-center flex flex-col md:flex-row items-center justify-between gap-2 text-xs font-mono text-gray-600">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-spotify-green animate-pulse"></span>
-            <span>SYSTEM ONLINE</span>
+            <span className={`w-2 h-2 rounded-full ${serverStatus === 'online' ? 'bg-spotify-green' : 'bg-yellow-500 animate-pulse'}`}></span>
+            <span>{serverStatus === 'online' ? 'SYSTEM ONLINE' : 'BOOTING SEQUENCE...'}</span>
           </div>
           <div className="flex items-center gap-4">
             <span className="hover:text-gray-400 transition-colors">Made by SA16</span>
