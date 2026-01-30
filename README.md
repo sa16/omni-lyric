@@ -1,4 +1,4 @@
-# OMNI SEARCH - Semantic Similarity Search & Retreival Engine 
+![alt text](https://github.com/sa16/omni-lyric/blob/main/Frontend/src/assets/omnis.jpeg)# OMNI SEARCH - Semantic Similarity Search & Retreival Engine 
 
 ![alt text](https://img.shields.io/badge/status-live-success?style=flat-square)
 
