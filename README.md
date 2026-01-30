@@ -1,4 +1,4 @@
-## ![alt text](https://github.com/sa16/omni-lyric/blob/main/Frontend/src/assets/omnis.jpeg) OMNI SEARCH - Semantic Similarity Search & Retreival Engine 
+## <img src="https://raw.githubusercontent.com/sa16/omni-lyric/main/Frontend/src/assets/omnis.jpeg" alt="OMNI SEARCH Banner" width="5%" height="5%"/> OMNI  SEARCH - Semantic Similarity Search & Retrieval Engine
 
 ![alt text](https://img.shields.io/badge/status-live-success?style=flat-square)
 
