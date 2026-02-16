@@ -18,7 +18,7 @@ db_url = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWO
 
 #creating engine - connection pool
 
-engine = create_engine(db_url, pool_size=20, max_overflow=10) #20 concurrent threads #upto 10 bonus threads, in case of traffic spikes. 
+engine = create_engine(db_url, pool_size=20, max_overflow=10, pool_pre_ping=True, pool_recycle=1800) #20 concurrent threads #upto 10 bonus threads, in case of traffic spikes. 
 
 #session settings
 #no autocommit, this gives us control over data saves, enabling rollback during connection/request errors. 
